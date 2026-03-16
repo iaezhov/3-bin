@@ -9,20 +9,20 @@ import (
 func main() {
 	demoData := []string{"Первый", "Второй", "Третий"}
 
-	var binList = make(bins.BinList, len(demoData))
+	binList := bins.NewBinList()
 
 	for i, value := range demoData {
-		binList[i] = *bins.NewBin(fmt.Sprintf("%d", i), value, false)
+		binList.Add(bins.NewBin(fmt.Sprintf("%d", i), value, false))
 	}
 
 	file.WriteFile()
 	file.ReadFile()
 
-	outputResult(&binList)
+	outputResult(binList)
 }
 
 func outputResult(list *bins.BinList) {
-	for _, value := range *list {
-		fmt.Println(value.Name)
+	for _, value := range list.Bins {
+		fmt.Println(value.GetName())
 	}
 }
