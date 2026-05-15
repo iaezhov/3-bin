@@ -3,20 +3,30 @@ package storage
 import (
 	"encoding/json"
 	"hw/3/bins"
-	"hw/3/file"
 )
 
-func SaveBins(filename string, list *bins.BinList) error {
+type Storage interface {
+	Read() ([]byte, error)
+	Write([]byte) error
+}
+type BinStorage struct {
+	storage Storage
+}
+
+func NewBinStorage(storage Storage) *BinStorage {
+	return &BinStorage{storage: storage}
+}
+
+func (bs *BinStorage) Save(list *bins.BinList) error {
 	data, err := json.Marshal(list)
 	if err != nil {
 		return err
 	}
-	_, err = file.WriteFile(data, filename)
-	return err
+	return bs.storage.Write(data)
 }
 
-func LoadBins(filename string) (*bins.BinList, error) {
-	data, err := file.ReadFile(filename)
+func (bs *BinStorage) Load() (*bins.BinList, error) {
+	data, err := bs.storage.Read()
 	if err != nil {
 		return nil, err
 	}
