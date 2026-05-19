@@ -2,12 +2,24 @@ package main
 
 import (
 	"fmt"
+	"hw/3/api"
 	"hw/3/bins"
+	"hw/3/config"
 	"hw/3/file"
 	"hw/3/storage"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Ошибка загрузки ENV")
+		return
+	}
+
+	api.OutputConfig(config.NewConfig())
+
 	// Наполнение данными
 	demoData := []string{"Первый", "Второй", "Третий"}
 	binList := bins.NewBinList()
