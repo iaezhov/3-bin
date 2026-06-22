@@ -21,18 +21,3 @@ func NewBin(id string, name string, private bool) *Bin {
 		CreatedAt: time.Now(),
 	}
 }
-
-type Bins = []*Bin
-type BinList struct {
-	Bins Bins
-}
-
-func NewBinList() *BinList {
-	return &BinList{
-		Bins: make(Bins, 0),
-	}
-}
-
-func (bl *BinList) Add(bin *Bin) {
-	bl.Bins = append(bl.Bins, bin)
-}

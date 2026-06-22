@@ -2,33 +2,48 @@ package main
 
 import (
 	"fmt"
+	"hw/3/api"
 	"hw/3/bins"
+	"hw/3/config"
 	"hw/3/file"
 	"hw/3/storage"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	demoData := []string{"Первый", "Второй", "Третий"}
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Ошибка загрузки ENV")
+		return
+	}
 
+	api.OutputConfig(config.NewConfig())
+
+	// Наполнение данными
+	demoData := []string{"Первый", "Второй", "Третий"}
 	binList := bins.NewBinList()
 	for i, value := range demoData {
 		binList.Add(bins.NewBin(fmt.Sprintf("%d", i), value, false))
 	}
 
+	// запись данных
 	filename := "bins.json"
-
-	if !file.IsJSONFile(filename) {
-		fmt.Println("Файл должен иметь расширение .json")
+	fileStorage, err := file.NewJSONFileStorage(filename)
+	if err != nil {
+		fmt.Println("Ошибка создания хранилища:", err)
 		return
 	}
 
-	if err := storage.SaveBins(filename, binList); err != nil {
+	binStorage := storage.NewBinStorage(fileStorage)
+	if err := binStorage.Save(binList); err != nil {
 		fmt.Println("Ошибка сохранения:", err)
 		return
 	}
 	fmt.Println("Список сохранён в", filename)
 
-	loadedList, err := storage.LoadBins(filename)
+	// чтение данных
+	loadedList, err := binStorage.Load()
 	if err != nil {
 		fmt.Println("Ошибка загрузки:", err)
 		return
