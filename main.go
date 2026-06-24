@@ -22,8 +22,7 @@ func main() {
 	}
 
 	vault := bins.NewVault(db)
-	vault.Save()
-	api := bins.NewJsonBinApi(envs.ApiKey, envs.ApiUrl)
+	api := bins.NewJsonBinApi(envs.ApiUrl, envs.ApiKey)
 	flags := config.NewFlags()
 
 	if flags.Actionlist {

@@ -3,7 +3,6 @@ package bins
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 )
 
 type Vault struct {
@@ -74,7 +73,7 @@ func (vault *VaultWithDb) DeleteBin(id string) bool {
 	var bins []Bin
 	isDeleted := false
 	for _, bin := range vault.Bins {
-		isMatched := strings.Contains(bin.ID, id)
+		isMatched := bin.ID == id
 		if !isMatched {
 			bins = append(bins, bin)
 			continue
