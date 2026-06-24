@@ -9,10 +9,6 @@ type Bin struct {
 	Name      string    `json:"name"`
 }
 
-func (bin *Bin) GetName() string {
-	return bin.Name
-}
-
 func NewBin(id string, name string, private bool) *Bin {
 	return &Bin{
 		ID:        id,
